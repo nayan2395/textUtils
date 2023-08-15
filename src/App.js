@@ -3,11 +3,13 @@ import './App.css';
 import Navbar from './components/Navbar';
 import TextForm from './components/TextForm';
 import Alert from './components/Alert';
-
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import About from './components/About';
+import ErrorPage from './router/error-page';
+import Error404 from './components/Error404';
 function App() {
   const [theme, setTheme] = useState('light')
   const [alert, setAlert] = useState(null)
-  // const [darkModeType, setDarkModeType] = useState('default')
   const [buttonColor, setbuttonColor] = useState('primary')
 
   const showAlert = (message, type) => {
@@ -25,6 +27,7 @@ function App() {
     if (theme === 'dark') {
       setTheme('light')
       document.body.style.backgroundColor = 'white'
+      setbuttonColor('primary')
       showAlert("Lightmode enabled!", "success")
     }
     else {
@@ -35,8 +38,6 @@ function App() {
   }
 
   const selectDarkMode = (colourName, hexCode) => {
-    // console.log(colourName, hexCode)
-    // setDarkModeType(colourName);
     document.body.style.backgroundColor = hexCode;
     if (colourName === 'red')
       setbuttonColor('danger')
@@ -46,11 +47,19 @@ function App() {
 
   return (
     <>
-      <Navbar title="textUtils" aboutText="About textUtils" mode={theme} toggleMode={toggleMode} selectDarkMode={selectDarkMode} alert={showAlert}></Navbar>
-      <Alert alert={alert} />
-      <div className="container">
-        <TextForm heading='Enter your text to format' mode={theme} alert={showAlert} buttonColor={buttonColor} ></TextForm>
-      </div>
+      <BrowserRouter >
+        <Navbar title="textUtils" aboutText="About" mode={theme} toggleMode={toggleMode} selectDarkMode={selectDarkMode} alert={showAlert}></Navbar>
+        <Alert alert={alert} />
+        <div className="container">
+          <Routes>
+            <Route path='/' element={<TextForm heading='Enter your text to format' mode={theme} alert={showAlert} buttonColor={buttonColor} ></TextForm>} errorElement={<ErrorPage />} />
+            <Route path='/about' element={<About mode={theme} />} errorElement={<ErrorPage />} />
+            <Route path='/*' element={<Error404 mode={theme} />} errorElement={<ErrorPage />} />
+          </Routes>
+        </div>
+
+      </BrowserRouter>
+
     </>
   );
 }
