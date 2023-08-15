@@ -1,3 +1,5 @@
+# About this project
+It is a practice react app known as textUtils that allows you to convert text to uppercase or to lowercase and remove extra spaces. It also counts number of words, characters. Also calculates average time to read the text.
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
